@@ -55,3 +55,18 @@ for week, week_data in data_by_week.items():
         writer = csv.writer(output_file)
         writer.writerow(headers)
         writer.writerows(week_data)
+
+#fourth task
+
+def get_data_for_date(date, filename):
+    with open(filename, 'r') as file:
+        reader = csv.reader(file)
+        headers = next(reader)
+        for row in reader:
+            row_date = datetime.strptime(row[0], '%Y/%m/%d')
+            if row_date == date:
+                return row[1:]
+    return None
+
+date_to_find = datetime.strptime('2023/09/15', '%Y/%m/%d')
+print(get_data_for_date(date_to_find, 'dataset.csv'))
