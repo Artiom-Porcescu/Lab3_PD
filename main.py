@@ -33,3 +33,25 @@ for year, year_data in data_by_year.items():
     with open(output_file_name, 'w', newline='') as output_file:
         writer = csv.writer(output_file)
         writer.writerows(year_data)
+
+#third task
+with open('dataset.csv', 'r') as file:
+    reader = csv.reader(file)
+    headers = next(reader)
+    data = list(reader)
+
+dates = [datetime.strptime(row[0], '%Y/%m/%d') for row in data]
+
+data_by_week = defaultdict(list)
+for date, row in zip(dates, data):
+    start_of_week = date - timedelta(days=date.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+    week_key = f"{start_of_week.strftime('%Y%m%d')}_{end_of_week.strftime('%Y%m%d')}"
+    data_by_week[week_key].append(row)
+
+for week, week_data in data_by_week.items():
+    output_file_name = f"{week}.csv"
+    with open(output_file_name, 'w', newline='') as output_file:
+        writer = csv.writer(output_file)
+        writer.writerow(headers)
+        writer.writerows(week_data)
